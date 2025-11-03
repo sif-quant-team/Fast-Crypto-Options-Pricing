@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  crypto-options-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # Use dev Dockerfile (no source copy)
+    image: crypto-options-pricing:dev
+    container_name: crypto_options_dev
+    
+    # Working directory
+    working_dir: /app
+    
+    # Mount entire repository for live development
+    volumes:
+      - .:/app
+      # Persist Bazel cache for faster rebuilds
+      - bazel_cache:/root/.cache/bazel
+      # Optional: Mount logs directory
+      - ./logs:/app/logs
+    
+    # Keep container running for interactive use
+    command: sleep infinity
+    
+    # Enable interactive terminal
+    stdin_open: true
+    tty: true
+    
+    # Environment variables
+    environment:
+      - BAZEL_VERSION=6.5.0
+      - CC=/usr/bin/gcc-10
+      - CXX=/usr/bin/g++-10
+    
+    # Resource limits (adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 16G
+        reservations:
+          cpus: '4.0'
+          memory: 8G
+    
+    # Network configuration
+    networks:
+      - crypto_dev_network
+
+volumes:
+  bazel_cache:
+    driver: local
+
+networks:
+  crypto_dev_network:
+    driver: bridge

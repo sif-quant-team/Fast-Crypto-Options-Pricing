@@ -4,8 +4,8 @@ cc_binary(
     deps = [
         "//ExchangeConnectivity:ExchangeConnectivity",
         "//FeedProcessing:FeedProcessing",
-        "//Orderbook:Orderbook",
-        "//Pricing:Pricing",
+        "//orderbook:Orderbook",
+        "//pricing:Pricing",
     ],
     copts = [
         "-std=c++20",

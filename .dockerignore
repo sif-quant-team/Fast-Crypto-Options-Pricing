@@ -1,0 +1,53 @@
+# Bazel build artifacts
+bazel-*
+.bazel*
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation (except README which we copy)
+*.md
+!README.md
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Test outputs
+test_results/
+test_output/
+
+# Node modules (if any)
+node_modules/
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build directories
+build/
+dist/
+out/
+
+# Coverage reports
+coverage/
+*.gcov
+*.gcda
+*.gcno
+
+# Backup files
+*.bak
+*.backup

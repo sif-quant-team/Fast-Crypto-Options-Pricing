@@ -25,7 +25,7 @@ cc_library(
         "//Types:TradeTypes",
         "//IPCConnection:IPCReceiver",
         "//IPCConnection:IPCSender",
-        "//Orderbook:Orderbook",
+        "//orderbook:Orderbook",
     ],
 )
 
@@ -46,7 +46,7 @@ cc_test(
         ":FeedProcessing",
         "//IPCConnection:IPCSender",
         "//IPCConnection:IPCReceiver", 
-        "//Orderbook:Orderbook",
+        "//orderbook:Orderbook",
         "@googletest//:gtest_main",
     ],
     copts = ["-std=c++20"],

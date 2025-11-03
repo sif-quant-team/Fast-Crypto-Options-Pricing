@@ -1,13 +1,26 @@
 workspace(name = "crypto_options")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:local.bzl", "new_local_repository")
+
+# Bazel Skylib (required by rules_boost)
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "bc283cdfcd526a52c3201279cda4bc298652efa898b10b4db0837dc51652756f",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.7.1/bazel-skylib-1.7.1.tar.gz",
+    ],
+)
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+bazel_skylib_workspace()
 
 # Boost
 http_archive(
     name = "com_github_nelhage_rules_boost",
     url = "https://github.com/nelhage/rules_boost/archive/master.tar.gz",
     strip_prefix = "rules_boost-master",
+    sha256 = "88a1d650806b50dfdf14e0a5b644e61df0dc2b0d21e195663fb3554a873ccc1b",
 )
 
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")

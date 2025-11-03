@@ -1,7 +1,7 @@
 cc_library(
     name = "Pricing",
-    srcs = ["Pricing.cpp"],
-    hdrs = ["Pricing.h"],
+    srcs = ["pricing.cpp"],
+    hdrs = ["pricing.h"],
     visibility = ["//visibility:public"],
     copts = ["-std=c++20"],
 )

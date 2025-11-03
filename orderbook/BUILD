@@ -1,9 +1,9 @@
 cc_library(
     name = "Orderbook",
-    srcs = ["Orderbook.cpp"],
+    srcs = ["orderbook.cpp"],
     hdrs = [
-        "Orderbook.h",
-        "Data.h",
+        "orderbook.h",
+        "data.h",
         "OrderbookTypes.h",
     ],
     visibility = ["//visibility:public"],

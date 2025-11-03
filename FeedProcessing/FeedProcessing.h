@@ -9,8 +9,8 @@
 #include "DataNormalization.h"
 #include "IPCConnection/IPCReceiver.h"
 #include "IPCConnection/IPCSender.h"
-#include "Orderbook/Orderbook.h"
-#include "Orderbook/OrderbookTypes.h"
+#include "orderbook/orderbook.h"
+#include "orderbook/OrderbookTypes.h"
 #include "Types/ExchangeBookTypes.h"
 #include "Types/SharedTypes.h"
 

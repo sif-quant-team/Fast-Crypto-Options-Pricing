@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  crypto-options-pricing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: crypto-options-pricing:latest
+    container_name: crypto_options_main
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits (adjust based on your needs)
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+    
+    # Environment variables
+    environment:
+      - MARKET_DATA_SOCKET=/tmp/market_data.sock
+      - BBO_OUTPUT_SOCKET=/tmp/bbo_output.sock
+      - PRICING_INPUT_SOCKET=/tmp/pricing_input.sock
+      # Add exchange-specific configuration if needed
+      # - EXCHANGE_HOST=stream.crypto.com
+      # - EXCHANGE_PORT=443
+    
+    # Volumes for persistent data (if needed)
+    volumes:
+      - ./logs:/home/cryptotrader/logs
+      - socket_data:/tmp
+    
+    # Network configuration
+    networks:
+      - crypto_network
+    
+    # Optional: Expose ports if you add monitoring/API endpoints
+    # ports:
+    #   - "8080:8080"
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Healthcheck (uncomment and adjust if you add health endpoints)
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+
+  # Optional: Add monitoring service (Prometheus/Grafana)
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   container_name: prometheus
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  #     - prometheus_data:/prometheus
+  #   ports:
+  #     - "9090:9090"
+  #   networks:
+  #     - crypto_network
+
+volumes:
+  socket_data:
+    driver: local
+  # prometheus_data:
+  #   driver: local
+
+networks:
+  crypto_network:
+    driver: bridge
