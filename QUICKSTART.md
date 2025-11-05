@@ -4,6 +4,9 @@
 
 ### Start Interactive Development Session
 ```bash
+# Build the image first (if not already built)
+docker build -t crypto-options-pricing:dev .
+
 # Option 1: Direct docker run
 docker run -it --rm \
   --mount type=bind,src="$(pwd)",dst=/app \
@@ -91,9 +94,6 @@ docker-compose down
 
 # Remove the dev image
 docker rmi crypto-options-pricing:dev
-
-# Clean up all Docker resources
-docker system prune -a
 ```
 
 ## 💡 Tips
