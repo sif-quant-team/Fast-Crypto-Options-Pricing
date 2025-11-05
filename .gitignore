@@ -1,0 +1,50 @@
+# Bazel build artifacts
+bazel-*
+.bazel*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Compiled binaries
+*.o
+*.a
+*.so
+*.dylib
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Test outputs
+test_results/
+test_output/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build directories
+build/
+dist/
+out/
+
+# Coverage reports
+coverage/
+*.gcov
+*.gcda
+*.gcno
+
+# Backup files
+*.bak
+*.backup
+
+# Docker volumes (if created locally)
+logs/
