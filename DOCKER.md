@@ -2,37 +2,27 @@
 
 ## 🐳 Quick Start
 
-### Build and Run with Docker
+### Build the Development Image
 
 ```bash
 # Build the Docker image
-docker build -t crypto-options-pricing:latest .
-
-# Run the container
-docker run -d \
-  --name crypto_options \
-  --restart unless-stopped \
-  crypto-options-pricing:latest
+docker build -t crypto-options-pricing:dev .
 ```
 
-### Development Mode - Mount Source Code
+### Run with Mounted Source Code
 
 Mount the entire repository for live development:
 
 ```bash
 # Run with mounted source code
 docker run -it --rm \
-  --name crypto_options_dev \
   --mount type=bind,src="$(pwd)",dst=/app \
-  -w /app \
-  crypto-options-pricing:latest \
-  /bin/bash
+  crypto-options-pricing:dev
 
-# Or run and build inside the container
+# Or build inside the container
 docker run -it --rm \
   --mount type=bind,src="$(pwd)",dst=/app \
-  -w /app \
-  crypto-options-pricing:latest \
+  crypto-options-pricing:dev \
   bazel build //:main
 ```
 
@@ -52,53 +42,22 @@ docker-compose down
 docker-compose up -d --build
 ```
 
-### Development with Docker Compose
+### Development with Docker Compose (Recommended)
 
-For development with live source code mounting, create `docker-compose.dev.yml`:
-
-```yaml
-version: '3.8'
-
-services:
-  crypto-options-dev:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder  # Use builder stage with all tools
-    image: crypto-options-pricing:dev
-    container_name: crypto_options_dev
-    working_dir: /app
-    
-    # Mount entire repository
-    volumes:
-      - .:/app
-      - bazel_cache:/root/.cache/bazel
-    
-    # Keep container running
-    command: sleep infinity
-    
-    # Interactive terminal
-    stdin_open: true
-    tty: true
-
-volumes:
-  bazel_cache:
-```
-
-Then run:
+The `docker-compose.yml` is configured for development with live source code mounting:
 
 ```bash
 # Start dev container
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose up -d
 
 # Access the container
-docker-compose -f docker-compose.dev.yml exec crypto-options-dev /bin/bash
+docker-compose exec crypto-options-dev /bin/bash
 
 # Build inside container
-docker-compose -f docker-compose.dev.yml exec crypto-options-dev bazel build //:main
+docker-compose exec crypto-options-dev bazel build //:main
 
 # Run tests
-docker-compose -f docker-compose.dev.yml exec crypto-options-dev bazel test //...
+docker-compose exec crypto-options-dev bazel test //...
 ```
 
 ## 📋 Configuration
@@ -130,14 +89,14 @@ docker run -d \
 
 ### Development Build
 
-For development with debug symbols:
+The Dockerfile is already configured for development:
 
 ```bash
-# Build with debug configuration
-docker build --target builder -t crypto-options-pricing:debug .
+# Build the dev image
+docker build -t crypto-options-pricing:dev .
 
 # Run with interactive shell
-docker run -it --rm crypto-options-pricing:debug /bin/bash
+docker run -it --rm crypto-options-pricing:dev /bin/bash
 ```
 
 ### Custom Build Arguments
@@ -155,7 +114,7 @@ ARG OPTIMIZATION_LEVEL=3
 docker build \
   --build-arg BAZEL_VERSION=6.5.0 \
   --build-arg OPTIMIZATION_LEVEL=3 \
-  -t crypto-options-pricing:latest .
+  -t crypto-options-pricing:dev .
 ```
 
 ### Multi-Platform Builds
@@ -169,7 +128,7 @@ docker buildx create --use
 # Build for multiple platforms
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  -t crypto-options-pricing:latest \
+  -t crypto-options-pricing:dev \
   --push .
 ```
 
@@ -297,11 +256,9 @@ git pull
 # Rebuild and restart
 docker-compose up -d --build
 
-# Or with Docker
-docker build -t crypto-options-pricing:latest .
-docker stop crypto_options
-docker rm crypto_options
-docker run -d --name crypto_options crypto-options-pricing:latest
+# Or rebuild with Docker directly
+docker build -t crypto-options-pricing:dev .
+docker-compose restart
 ```
 
 ### Backup and Restore
@@ -392,28 +349,28 @@ jobs:
 **Issue: Build fails with Bazel errors**
 ```bash
 # Clean Bazel cache and rebuild
-docker build --no-cache -t crypto-options-pricing:latest .
+docker build --no-cache -t crypto-options-pricing:dev .
 ```
 
 **Issue: Container exits immediately**
 ```bash
 # Check logs for errors
-docker logs crypto_options
+docker-compose logs
 
 # Run in interactive mode
-docker run -it --rm crypto-options-pricing:latest /bin/bash
+docker run -it --rm crypto-options-pricing:dev /bin/bash
 ```
 
 **Issue: Out of memory**
 ```bash
-# Increase memory limit
-docker run -d --memory="16g" crypto-options-pricing:latest
+# Increase memory limit in docker-compose.yml
+# Edit the limits section under deploy.resources
 ```
 
 **Issue: Network connectivity problems**
 ```bash
 # Check DNS resolution
-docker exec crypto_options nslookup stream.crypto.com
+docker-compose exec crypto-options-dev nslookup stream.crypto.com
 
 # Test network connectivity
 docker exec crypto_options curl -I https://stream.crypto.com

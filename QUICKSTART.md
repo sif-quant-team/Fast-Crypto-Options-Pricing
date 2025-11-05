@@ -1,9 +1,5 @@
 # Quick Docker Development Guide
 
-## ✅ Setup Complete!
-
-Your Docker development environment is now ready. Here's how to use it:
-
 ## 🚀 Quick Commands
 
 ### Start Interactive Development Session
@@ -14,8 +10,8 @@ docker run -it --rm \
   crypto-options-pricing:dev
 
 # Option 2: Using docker-compose (recommended)
-docker-compose -f docker-compose.dev.yml up -d
-docker-compose -f docker-compose.dev.yml exec crypto-options-dev /bin/bash
+docker-compose up -d
+docker-compose exec crypto-options-dev /bin/bash
 ```
 
 ### Build Your Project
@@ -91,7 +87,7 @@ bazel build //:main
 
 ```bash
 # Stop dev container (if using docker-compose)
-docker-compose -f docker-compose.dev.yml down
+docker-compose down
 
 # Remove the dev image
 docker rmi crypto-options-pricing:dev
@@ -104,7 +100,7 @@ docker system prune -a
 
 - Build artifacts persist in the container's `/app/bazel-*` directories
 - These are visible on your host (as symlinks) but stored in the container
-- Bazel cache is mounted in docker-compose.dev.yml for faster rebuilds
+- Bazel cache is mounted in docker-compose.yml for faster rebuilds
 - Use `bazel clean` inside container if you need a fresh build
 
 ## 🐛 Troubleshooting
